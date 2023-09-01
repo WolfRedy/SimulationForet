@@ -12,5 +12,8 @@ typedef struct{
 
 }CARTE;
 
-void MATRICE_ALEATOIRE();
+CARTE** creationMatrice(int longeur, int largeur);
+void destructionMatrice(CARTE **map, int longueur);
+void remplirMatriceRandom(CARTE **map, int longueur, int largeur);
+void afficheMatrice(CARTE **map, int longueur, int largeur);
 //int CHIFFRE_ALEATOIRE

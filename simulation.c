@@ -1,37 +1,83 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include <time.h> 
+#include <stdlib.h> 
+
 #include "simulation.h"
 
 
 
-void creationMatrice(int longeur, int largeur){
+CARTE** creationMatrice(int longeur, int largeur){
     
-
     CARTE **foret = (CARTE**)malloc(sizeof(CARTE)*longeur);
 
     for (int i = 0;i<longeur;i++){
         foret[i] = (CARTE*)malloc(largeur*sizeof(CARTE));
     }
 
-    for (int i = 0; i < largeur; i++) {
-        for (int j = 0; j < longeur; j++) {
-            printf("%c ", ARBRE);
+  
+  printf("%d",foret);
+  return foret;
+   
+}
+
+void afficheMatrice(CARTE **map, int longueur, int largeur){
+    for (int i = 0; i<longueur; i++){
+        for (int j = 0; j<largeur;j++){
+            printf(" %c",map[i][j].type);
         }
         printf("\n");
     }
+}
 
-    for(int i=0;i<longeur;i++){
-        free(foret[i]);
+void remplirMatriceRandom(CARTE **map, int longueur, int largeur){
+    srand(time(NULL));
+    printf("TETETTETE %c TETETETE", SOL);
+    for (int i = 0; i<longueur; i++){
+        for (int j = 0; j<largeur;j++){
+            int r = rand()%8+1;
+            switch(r){
+                case 1:
+                    map[i][j].type=SOL;
+                    break;
+                case 2:
+                    map[i][j].type=ARBRE;
+
+                    break;
+                case 3:
+                    map[i][j].type=FEUILLE;
+
+                    break;
+                case 4:
+                    map[i][j].type=ROCHE;
+
+                    break;
+                case 5:
+                    map[i][j].type=HERBE;
+
+                case 6:
+                    map[i][j].type=EAU;
+                    break;
+                case 7:
+                    map[i][j].type=CENDRES;
+                    break;
+                case 8:
+                    map[i][j].type=CENDRES_ETEINTES;
+                    break;
+    }
+    
+        }
     }
 
-    free(foret);
-/*
-for (int i = 0; i <taille ; i++) {
-    n = rand() % 8 + 1;
-    printf("%d\n", n);
-  }
-  */
+    //printf("\n %d \n",map[1][1].degre);
+    //printf("\n %c \n",map[1][1].type);
+}
+void destructionMatrice(CARTE **map, int longueur){
+    //printf("%d",map);
+    for(int i=0;i<longueur;i++){
+        free(map[i]);
+    }
+    free(map);
+    //printf("test");
 }
 
 

@@ -1,19 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "simulation.h"
+#include "menu.h"
 
 int main()
 {
-    int longeur;
+    affichageMenu();
+    int longueur;
     int largeur;
-    printf("Choisir la longeur : \n");
-    scanf("%d", &longeur);
-    printf("Choisir la largeur : \n");
-    scanf("%d", &largeur);
-    
-    creationMatrice(longeur, largeur);
+    choixTaille(&longueur,&largeur);
+    //printf("%d %d \n", longueur, largeur);
 
-
+    CARTE** test = creationMatrice(longueur, largeur);
+    //printf("%d",test);
+    remplirMatriceRandom(test,  longueur,  largeur);
+    afficheMatrice(test,  longueur,  largeur);
+    destructionMatrice(test, longueur);
+    //destructionMatrice(map,longueur);
 
 
     return 0;
