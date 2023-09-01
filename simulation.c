@@ -5,15 +5,8 @@
 
 
 
-void MATRICE_ALEATOIRE(){
-
-    int longeur;
-    int largeur;
-
-    printf("Choisir la longeur : ");
-    scanf("%d", &longeur);
-    printf("Choisir la largeur : ");
-    scanf("%d", &largeur);
+void creationMatrice(int longeur, int largeur){
+    
 
     CARTE **foret = (CARTE**)malloc(sizeof(CARTE)*longeur);
 

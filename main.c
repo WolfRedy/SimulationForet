@@ -4,9 +4,14 @@
 
 int main()
 {
-
-
-    MATRICE_ALEATOIRE();
+    int longeur;
+    int largeur;
+    printf("Choisir la longeur : \n");
+    scanf("%d", &longeur);
+    printf("Choisir la largeur : \n");
+    scanf("%d", &largeur);
+    
+    creationMatrice(longeur, largeur);
 
 
 
