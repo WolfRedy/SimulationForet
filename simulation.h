@@ -14,10 +14,11 @@ typedef struct{
 
 typedef struct pile
         {
-                int valeur;
+                CARTE** adresseCarte;
                 struct pile *prec;
         } pile ;
-
+void view(pile *p);
+void push(pile **laPile, CARTE** carte);
 CARTE** creationMatrice();
 void destructionMatrice(CARTE **map);
 void remplirMatriceRandom(CARTE **map);

@@ -16,11 +16,20 @@ int main()
     choixTaille();
     //printf("%d %d \n", longueur, largeur);
 
-    CARTE** test = creationMatrice();
+    CARTE** test1 = creationMatrice();
+    CARTE** test2 = creationMatrice();
     //printf("%d",test);
-    remplirMatriceRandom(test);
-    afficheMatrice(test);
-    destructionMatrice(test);
+    remplirMatriceRandom(test1);
+    remplirMatriceRandom(test2);
+    //afficheMatrice(test1);
+    //creationPile();
+    pile* pileSimulation = NULL;
+    push(&pileSimulation,test1);
+    push(&pileSimulation,test2);
+    //ush(&pileSimulation,10);
+    view(pileSimulation);
+    destructionMatrice(test1);
+    destructionMatrice(test2);
     //destructionMatrice(map,longueur);
 
 

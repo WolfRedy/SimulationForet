@@ -81,12 +81,25 @@ void destructionMatrice(CARTE **map){
 }
 
 
+/*void creationPile(){
+    pile* pileSimulation = NULL;
+    return pileSimulation;
+}*/
 
-
-void matriceManu (){
-
-
-
-
+void push(pile **laPile, CARTE **map){
+//void push(pile **laPile, int valeur){
+    pile *elementCourant = malloc(sizeof(pile));
+    if(!elementCourant) exit(EXIT_FAILURE);
+    //elementCourant->adresseCarte = map;
+    elementCourant->adresseCarte = map;
+    elementCourant->prec = *laPile;
+    *laPile = elementCourant;
 }
 
+void view(pile *p){
+        while(p)
+          {
+             printf("\n %x \n",p->adresseCarte);
+             p = p->prec;
+          }
+}
