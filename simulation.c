@@ -1,16 +1,16 @@
+
 #include <stdio.h>
 #include <time.h> 
 #include <stdlib.h> 
-
 #include "simulation.h"
+#include "ext_glob.h"
 
 
-
-CARTE** creationMatrice(int longeur, int largeur){
+CARTE** creationMatrice(){
     
-    CARTE **foret = (CARTE**)malloc(sizeof(CARTE)*longeur);
+    CARTE **foret = (CARTE**)malloc(sizeof(CARTE)*longueur);
 
-    for (int i = 0;i<longeur;i++){
+    for (int i = 0;i<longueur;i++){
         foret[i] = (CARTE*)malloc(largeur*sizeof(CARTE));
     }
 
@@ -20,7 +20,7 @@ CARTE** creationMatrice(int longeur, int largeur){
    
 }
 
-void afficheMatrice(CARTE **map, int longueur, int largeur){
+void afficheMatrice(CARTE **map){
     for (int i = 0; i<longueur; i++){
         for (int j = 0; j<largeur;j++){
             printf(" %c",map[i][j].type);
@@ -29,9 +29,9 @@ void afficheMatrice(CARTE **map, int longueur, int largeur){
     }
 }
 
-void remplirMatriceRandom(CARTE **map, int longueur, int largeur){
+void remplirMatriceRandom(CARTE **map){
     srand(time(NULL));
-    printf("TETETTETE %c TETETETE", SOL);
+    //printf("TETETTETE %c TETETETE", SOL);
     for (int i = 0; i<longueur; i++){
         for (int j = 0; j<largeur;j++){
             int r = rand()%8+1;
@@ -71,7 +71,7 @@ void remplirMatriceRandom(CARTE **map, int longueur, int largeur){
     //printf("\n %d \n",map[1][1].degre);
     //printf("\n %c \n",map[1][1].type);
 }
-void destructionMatrice(CARTE **map, int longueur){
+void destructionMatrice(CARTE **map){
     //printf("%d",map);
     for(int i=0;i<longueur;i++){
         free(map[i]);

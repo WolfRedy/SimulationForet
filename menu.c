@@ -1,5 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctype.h>
+#include "ext_glob.h"
+
+
 
 int affichageMenu() {
     while(1) {
@@ -15,7 +19,10 @@ int affichageMenu() {
         printf("///////////////////////////////////////////////\n");
         printf("Enter votre choix:\n");
 
+        //scanf("%d", &choix);
         scanf("%d", &choix);
+           
+    
 
 //Choix:
         switch (choix) {
@@ -36,16 +43,21 @@ int affichageMenu() {
             }
             default:
                 printf("wrong Input\n");
-                return 0;
+                //return 0;
                 break;
+                
 
         }
     }
 }
 
-void choixTaille(int * longu, int * larg){
+void choixTaille(){
+    int valeur = 0;
+    
     printf("Choisir la longeur : \n");
-    scanf("%d", longu);
+    scanf("%d", &valeur);
+    longueur = valeur;
     printf("Choisir la largeur : \n");
-    scanf("%d", larg);
+    scanf("%d", &valeur);
+    largeur = valeur;
 }

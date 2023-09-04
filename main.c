@@ -1,21 +1,26 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "simulation.h"
 #include "menu.h"
+#define _MAIN_
+#include "ext_glob.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
 
 int main()
 {
+    int longueur = 0;
+    int largeur = 0;
     affichageMenu();
-    int longueur;
-    int largeur;
-    choixTaille(&longueur,&largeur);
+    choixTaille();
     //printf("%d %d \n", longueur, largeur);
 
-    CARTE** test = creationMatrice(longueur, largeur);
+    CARTE** test = creationMatrice();
     //printf("%d",test);
-    remplirMatriceRandom(test,  longueur,  largeur);
-    afficheMatrice(test,  longueur,  largeur);
-    destructionMatrice(test, longueur);
+    remplirMatriceRandom(test);
+    afficheMatrice(test);
+    destructionMatrice(test);
     //destructionMatrice(map,longueur);
 
 

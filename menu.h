@@ -1,2 +1,6 @@
+#ifndef _MENU_H_
+#define _MENU_H_
+
 int affichageMenu();
-void choixTaille(int *longu, int *larg);
+void choixTaille();
+#endif
