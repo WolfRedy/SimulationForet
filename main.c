@@ -36,14 +36,17 @@ int main()
     coordFeu->x=x;
     coordFeu->y=y;
     coordFeu[1].exit=-1;
-    chercheVoisinage(pileSimulation->adresseCarte,pileSimulation->tabCoordFeu);
-    affichage_de_la_carte(pileSimulation->adresseCarte);
+    chercheVoisinage(carteInitial,coordFeu);
+    affichage_de_la_carte(carteInitial);
+    //chercheVoisinage(pileSimulation->adresseCarte,pileSimulation->tabCoordFeu);
+    //affichage_de_la_carte(pileSimulation->adresseCarte);
 
     pile* pileSimulation = NULL;
     push(&pileSimulation,carteInitial, coordFeu);
+    //showTab(coordFeu);
     view(pileSimulation);
-
-    //printf("STOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
+    
+    printf("STOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
     CARTE** carteSuivante = NULL;
     char choix;
     int i = 0;

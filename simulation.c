@@ -142,32 +142,38 @@ void destructionMatrice(CARTE **map){
 }
 
 void chercheVoisinage(CARTE** carte, LOCFEU* tableau){
-    
     LOCFEU* tempTab = creationTableauFeu();
-    
     int indexTab=0;
     int tempX;
     int tempY;
+    int indexEndTab = endOfTab(tableau);
     printf("%d\n",tableau[indexTab].exit);
-    while(tableau[indexTab].exit!=-1){
+    //while(tableau[indexTab].exit!=-1){
+    //while(indexEndTab<indexTab){
+    for(int indexInitialTab=0;indexInitialTab<indexEndTab;indexInitialTab++){
         printf("A");
-        tempX = tableau[indexTab].x;
-        tempY = tableau[indexTab].y;
+        tempX = tableau[indexInitialTab].x;
+        tempY = tableau[indexInitialTab].y;
         for(int i = -1; i<2; i++){
             for(int j = -1; j<2 ;j++){
-                printf("%d\n",carte[tempX + i][tempY + j].etat);
+                //printf("%d\n",carte[tempX + i][tempY + j].etat);
                 if(carte[tempX + i][tempY + j].etat != -1 && (i!=0 || j!=0) && carte[tempX + i][tempY + j].type != SOL && carte[tempX + i][tempY + j].type != EAU){
-                    //printf("BBB");
+                    //printf("%d", indexTab);
                     tempTab[indexTab].x = tempX + i;
                     tempTab[indexTab].y = tempY + j;
                     carte[tempX + i][tempY + j].etat = 1;
                     carte[tempX + i][tempY + j].type = FEU;
+                    indexTab++;
+                    
                 }
             }
         }
+        //endOfFor:
         //printf("%d",indexTab);
-        indexTab++;
+        
     }
+    printf("TEST  %d-%d  TEST \n",tempTab[3].y,tempTab[3].y);
+    showTab(tempTab);
     copyTab(tempTab, tableau);
     //tableau[indexTab + 1].exit=0;
     
@@ -185,6 +191,14 @@ void showTab(LOCFEU *tableau){
     int index = 0;
     for(index; index<(longueur*largeur)+1;index++){
         printf("Coordonnées du tableau n°%d :%d-%d\n",index,tableau[index].x,tableau[index].y);
+    }
+}
+int endOfTab(LOCFEU *tableau){
+    int index = 0;
+    for(index; index<(longueur*largeur)+1;index++){
+        if(tableau[index].exit==-1){
+            return index;
+        }
     }
 }
 

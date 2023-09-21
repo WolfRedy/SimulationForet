@@ -26,5 +26,7 @@ void remplir_la_carte_manuel(CARTE **map);
 void remplirMatriceRandom(CARTE **map);
 void affichage_de_la_carte(CARTE **map);
 void copyTab(LOCFEU *tempTab, LOCFEU *newVersionTab);
+void showTab(LOCFEU *tableau);
+int endOfTab(LOCFEU *tableau);
 //int CHIFFRE_ALEATOIRE
 #endif
