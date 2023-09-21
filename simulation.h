@@ -1,8 +1,9 @@
 #ifndef _SIMULATION_H_
+
 #define _SIMULATION_H_
+//#include "pile.h"
 
-
-typedef enum {SOL = '+', ARBRE = '*', FEUILLE = ' ', ROCHE = '#', HERBE = 'x', EAU = '/', CENDRES = '-', CENDRES_ETEINTES = '@'}ELEMENTS;
+typedef enum {SOL = '+', ARBRE = '*', FEUILLE = ' ', ROCHE = '#', HERBE = 'x', EAU = '/', CENDRES = '-', CENDRES_ETEINTES = '@', FEU = 'F'}ELEMENTS;
 
 typedef struct{
 
@@ -12,16 +13,18 @@ typedef struct{
 
 }CARTE;
 
-typedef struct pile
-        {
-                CARTE** adresseCarte;
-                struct pile *prec;
-        } pile ;
-void view(pile *p);
-void push(pile **laPile, CARTE** carte);
+typedef struct{
+    int x;
+    int y;
+    int exit;
+}LOCFEU;
 CARTE** creationMatrice();
+LOCFEU* creationTableauFeu();
+void chercheVoisinage(CARTE** carte, LOCFEU* tableau);
 void destructionMatrice(CARTE **map);
+void remplir_la_carte_manuel(CARTE **map);
 void remplirMatriceRandom(CARTE **map);
-void afficheMatrice(CARTE **map);
+void affichage_de_la_carte(CARTE **map);
+void copyTab(LOCFEU *tempTab, LOCFEU *newVersionTab);
 //int CHIFFRE_ALEATOIRE
 #endif

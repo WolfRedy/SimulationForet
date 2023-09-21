@@ -49,6 +49,7 @@ int affichageMenu() {
 
         }
     }
+    
 }
 
 void choixTaille(){
