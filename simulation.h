@@ -2,7 +2,7 @@
 
 #define _SIMULATION_H_
 //#include "pile.h"
-
+#include <stdbool.h>
 typedef enum {SOL = '+', ARBRE = '*', FEUILLE = ' ', ROCHE = '#', HERBE = 'x', EAU = '/', CENDRES = '-', CENDRES_ETEINTES = '@', FEU = 'F'}ELEMENTS;
 
 typedef struct{
@@ -18,6 +18,7 @@ typedef struct{
     int y;
     int exit;
 }LOCFEU;
+
 CARTE** creationMatrice();
 LOCFEU* creationTableauFeu();
 void chercheVoisinage(CARTE** carte, LOCFEU* tableau);
@@ -28,5 +29,7 @@ void affichage_de_la_carte(CARTE **map);
 void copyTab(LOCFEU *tempTab, LOCFEU *newVersionTab);
 void showTab(LOCFEU *tableau);
 int endOfTab(LOCFEU *tableau);
+void nextMap(CARTE **initialMap, CARTE **emptyMap);
+bool isInBound(int x, int y);
 //int CHIFFRE_ALEATOIRE
 #endif

@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <time.h> 
+#include <stdbool.h>
 #include <stdlib.h> 
 #include "simulation.h"
 #include "ext_glob.h"
@@ -22,8 +23,6 @@ LOCFEU* creationTableauFeu(){
     LOCFEU *tableau = (LOCFEU*)malloc(sizeof(LOCFEU)*(longueur*largeur)+1);
     return tableau;
 }
-
-
 
 void affichage_de_la_carte(CARTE **map){
     for (int i = 0; i<longueur; i++){
@@ -147,33 +146,42 @@ void chercheVoisinage(CARTE** carte, LOCFEU* tableau){
     int tempX;
     int tempY;
     int indexEndTab = endOfTab(tableau);
-    printf("%d\n",tableau[indexTab].exit);
+    int cursor = 0;
+    //printf("%d\n",tableau[indexTab].exit);
     //while(tableau[indexTab].exit!=-1){
     //while(indexEndTab<indexTab){
-    for(int indexInitialTab=0;indexInitialTab<indexEndTab;indexInitialTab++){
-        printf("A");
-        tempX = tableau[indexInitialTab].x;
-        tempY = tableau[indexInitialTab].y;
+    while(tableau[cursor].exit!=-1){
+        //printf("A");
+        tempX = tableau[cursor].x;
+        tempY = tableau[cursor].y;
         for(int i = -1; i<2; i++){
             for(int j = -1; j<2 ;j++){
                 //printf("%d\n",carte[tempX + i][tempY + j].etat);
-                if(carte[tempX + i][tempY + j].etat != -1 && (i!=0 || j!=0) && carte[tempX + i][tempY + j].type != SOL && carte[tempX + i][tempY + j].type != EAU){
+                if(tableau[cursor].exit==-1){
+                        tableau[cursor+1].exit=0;
+                        goto endOfFor;
+                    }
+                if(isInBound(tempX +i, tempY +j) && carte[tempX + i][tempY + j].etat != 1 && carte[tempX + i][tempY + j].type != SOL && carte[tempX + i][tempY + j].type != EAU ){
+                    //&& (i!=0 || j!=0)
+                    //&& carte[tempX + i][tempY + j].type != SOL && carte[tempX + i][tempY + j].type != EAU
                     //printf("%d", indexTab);
+                    
                     tempTab[indexTab].x = tempX + i;
                     tempTab[indexTab].y = tempY + j;
                     carte[tempX + i][tempY + j].etat = 1;
                     carte[tempX + i][tempY + j].type = FEU;
                     indexTab++;
-                    
                 }
             }
         }
-        //endOfFor:
-        //printf("%d",indexTab);
-        
+        cursor++;
+
     }
-    printf("TEST  %d-%d  TEST \n",tempTab[3].y,tempTab[3].y);
-    showTab(tempTab);
+    endOfFor: 
+    //printf("TEST  %d-%d  TEST \n",tempTab[3].y,tempTab[3].y);
+    //showTab(tempTab);*
+    tempTab[indexTab].exit = -1;
+    tableau[indexEndTab].exit=0;
     copyTab(tempTab, tableau);
     //tableau[indexTab + 1].exit=0;
     
@@ -181,9 +189,11 @@ void chercheVoisinage(CARTE** carte, LOCFEU* tableau){
 }
 void copyTab(LOCFEU *tempTab, LOCFEU *newVersionTab){
     int index = 0;
-    for(index; index<(longueur*largeur)+1;index++){
+    while(tempTab[index].exit!=-1){//Le probleme est sque je vais trop loin, while exit !=-1
         newVersionTab[index].x=tempTab[index].x;
         newVersionTab[index].y=tempTab[index].y;
+        //newVersionTab[index].exit=-1;
+        index++;
     }
     newVersionTab[index].exit = -1;
 }
@@ -200,6 +210,23 @@ int endOfTab(LOCFEU *tableau){
             return index;
         }
     }
+}
+
+void nextMap(CARTE **initialMap, CARTE **emptyMap){
+    for (int i = 0; i<longueur; i++){
+        for (int j = 0; j<largeur;j++){
+            emptyMap[i][j].type = initialMap[i][j].type;
+            emptyMap[i][j].etat = initialMap[i][j].etat;
+            emptyMap[i][j].degre = initialMap[i][j].degre;
+        }
+    }
+}
+
+bool isInBound(int x, int y){
+    if(x>=longueur || y>=largeur || x<0 || y<0){
+        return false;
+    }
+    return true;
 }
 
 

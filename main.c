@@ -37,13 +37,13 @@ int main()
     coordFeu->y=y;
     coordFeu[1].exit=-1;
     chercheVoisinage(carteInitial,coordFeu);
-    affichage_de_la_carte(carteInitial);
     //chercheVoisinage(pileSimulation->adresseCarte,pileSimulation->tabCoordFeu);
     //affichage_de_la_carte(pileSimulation->adresseCarte);
-
+    affichage_de_la_carte(carteInitial);
     pile* pileSimulation = NULL;
     push(&pileSimulation,carteInitial, coordFeu);
     //showTab(coordFeu);
+    //showTab(pileSimulation->tabCoordFeu);
     view(pileSimulation);
     
     printf("STOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
@@ -83,9 +83,11 @@ int main()
             printf("%x",&pileSimulation);
             
             carteSuivante = creationMatrice();
-            remplirMatriceRandom(carteSuivante);
+            nextMap(pileSimulation->adresseCarte,carteSuivante);
+            chercheVoisinage(carteSuivante,coordFeu);
+            //remplirMatriceRandom(carteSuivante);
             push(&pileSimulation,carteSuivante, NULL);
-            view(pileSimulation);
+            //view(pileSimulation);
             affichage_de_la_carte(pileSimulation->adresseCarte);
             i++;
             
