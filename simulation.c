@@ -140,7 +140,7 @@ void destructionMatrice(CARTE **map){
     //printf("test");
 }
 
-void chercheVoisinage(CARTE** carte, LOCFEU* tableau){
+int chercheVoisinage(CARTE** carte, LOCFEU* tableau){
     LOCFEU* tempTab = creationTableauFeu();
     int indexTab=0;
     int tempX;
@@ -184,8 +184,7 @@ void chercheVoisinage(CARTE** carte, LOCFEU* tableau){
     tableau[indexEndTab].exit=0;
     copyTab(tempTab, tableau);
     //tableau[indexTab + 1].exit=0;
-    
-
+    return indexTab;
 }
 void copyTab(LOCFEU *tempTab, LOCFEU *newVersionTab){
     int index = 0;

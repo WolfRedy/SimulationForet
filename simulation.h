@@ -21,7 +21,7 @@ typedef struct{
 
 CARTE** creationMatrice();
 LOCFEU* creationTableauFeu();
-void chercheVoisinage(CARTE** carte, LOCFEU* tableau);
+int chercheVoisinage(CARTE** carte, LOCFEU* tableau);
 void destructionMatrice(CARTE **map);
 void remplir_la_carte_manuel(CARTE **map);
 void remplirMatriceRandom(CARTE **map);
