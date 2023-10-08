@@ -5,12 +5,12 @@ typedef struct pile
         {
                 CARTE** adresseCarte;
                 LOCFEU* tabCoordFeu;
-                int nombreAjout;
+                int nbFlames;
                 struct pile *prec;
         } pile ;
 
 void view(pile *p);
-void push(pile **laPile, CARTE **map, LOCFEU *tableauFeu);
+void push(pile **laPile, CARTE **map, LOCFEU *tableauFeu,int nbFlames);
 void pop(pile **laPile);
 
 #endif

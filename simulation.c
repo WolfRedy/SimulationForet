@@ -202,6 +202,15 @@ void showTab(LOCFEU *tableau){
         printf("Coordonnées du tableau n°%d :%d-%d\n",index,tableau[index].x,tableau[index].y);
     }
 }
+void cutTab(LOCFEU *tab, int cutIndex){
+    int index = 0;
+    for(index; index<cutIndex; index++){
+        tab[index].x=tab[index].x;
+        tab[index].x=tab[index].y;
+    }
+    tab[index].exit = -1;
+    
+}
 int endOfTab(LOCFEU *tableau){
     int index = 0;
     for(index; index<(longueur*largeur)+1;index++){

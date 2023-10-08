@@ -31,5 +31,6 @@ void showTab(LOCFEU *tableau);
 int endOfTab(LOCFEU *tableau);
 void nextMap(CARTE **initialMap, CARTE **emptyMap);
 bool isInBound(int x, int y);
+void cutTab(LOCFEU *tab, int cutIndex);
 //int CHIFFRE_ALEATOIRE
 #endif

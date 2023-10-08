@@ -15,6 +15,7 @@ int main()
     int longueur = 0;
     int largeur = 0;
     int nombreIteration;
+    int nbFlames;
 
     printf("choisisez le nombre d'iterations \n");
     scanf("%d",&nombreIteration);
@@ -36,18 +37,19 @@ int main()
     coordFeu->x=x;
     coordFeu->y=y;
     coordFeu[1].exit=-1;
-    chercheVoisinage(carteInitial,coordFeu);
+    nbFlames = chercheVoisinage(carteInitial,coordFeu);
     //chercheVoisinage(pileSimulation->adresseCarte,pileSimulation->tabCoordFeu);
     //affichage_de_la_carte(pileSimulation->adresseCarte);
     affichage_de_la_carte(carteInitial);
     pile* pileSimulation = NULL;
-    push(&pileSimulation,carteInitial, coordFeu);
+    push(&pileSimulation,carteInitial, coordFeu, nbFlames);
     //showTab(coordFeu);
     //showTab(pileSimulation->tabCoordFeu);
     view(pileSimulation);
     
     printf("STOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
     CARTE** carteSuivante = NULL;
+    LOCFEU* tableauSuivant = NULL;
     char choix;
     int i = 0;
     while(i<nombreIteration){
@@ -66,13 +68,14 @@ int main()
         if(choix == '1'){
             printf("\nVous avez choisi de revenir en arrière\n");
             //printf("%x",&pileSimulation);
-            printf("%x",pileSimulation->adresseCarte);
-            destructionMatrice(pileSimulation->adresseCarte);
+            //printf("%x",pileSimulation->adresseCarte);
+            //destructionMatrice(pileSimulation->adresseCarte);
             pop(&pileSimulation);
             //lui donner l'adresse du premier element de la pille
             printf("CA A MARCHE");
             //On doit redonner une adresse a test2
             view(pileSimulation);
+            affichage_de_la_carte(pileSimulation->adresseCarte);
             i--;
         }else if(choix =='2'){
             printf("\nVous avez choisi de modifier une valeur\n");
@@ -84,9 +87,12 @@ int main()
             
             carteSuivante = creationMatrice();
             nextMap(pileSimulation->adresseCarte,carteSuivante);
-            chercheVoisinage(carteSuivante,coordFeu);
+            tableauSuivant = creationTableauFeu();
+            copyTab(pileSimulation->tabCoordFeu, tableauSuivant);
+
+            nbFlames = chercheVoisinage(carteSuivante,tableauSuivant);
             //remplirMatriceRandom(carteSuivante);
-            push(&pileSimulation,carteSuivante, NULL);
+            push(&pileSimulation,carteSuivante, tableauSuivant, nbFlames);
             //view(pileSimulation);
             affichage_de_la_carte(pileSimulation->adresseCarte);
             i++;
