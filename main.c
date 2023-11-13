@@ -16,7 +16,7 @@ int main()
     int largeur = 0;
     int nombreIteration;
     int nbFlames;
-
+    
     printf("choisisez le nombre d'iterations \n");
     scanf("%d",&nombreIteration);
     
@@ -38,16 +38,14 @@ int main()
     coordFeu->y=y;
     coordFeu[1].exit=-1;
     nbFlames = chercheVoisinage(carteInitial,coordFeu);
-    //chercheVoisinage(pileSimulation->adresseCarte,pileSimulation->tabCoordFeu);
-    //affichage_de_la_carte(pileSimulation->adresseCarte);
+
     affichage_de_la_carte(carteInitial);
     pile* pileSimulation = NULL;
     push(&pileSimulation,carteInitial, coordFeu, nbFlames);
-    //showTab(coordFeu);
-    //showTab(pileSimulation->tabCoordFeu);
+
     view(pileSimulation);
     
-    printf("STOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
+
     CARTE** carteSuivante = NULL;
     LOCFEU* tableauSuivant = NULL;
     char choix;
@@ -67,9 +65,7 @@ int main()
        
         if(choix == '1'){
             printf("\nVous avez choisi de revenir en arrière\n");
-            //printf("%x",&pileSimulation);
-            //printf("%x",pileSimulation->adresseCarte);
-            //destructionMatrice(pileSimulation->adresseCarte);
+ 
             pop(&pileSimulation);
             //lui donner l'adresse du premier element de la pille
             printf("CA A MARCHE");
@@ -83,7 +79,7 @@ int main()
         }else if(choix == '3'){
             
             printf("\nVous avez choisi d'avancer\n");
-            printf("%x",&pileSimulation);
+            //printf("%x",&pileSimulation);
             
             carteSuivante = creationMatrice();
             nextMap(pileSimulation->adresseCarte,carteSuivante);

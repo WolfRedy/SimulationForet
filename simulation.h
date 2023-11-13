@@ -8,7 +8,7 @@ typedef enum {SOL = '+', ARBRE = '*', FEUILLE = ' ', ROCHE = '#', HERBE = 'x', E
 typedef struct{
 
     ELEMENTS type;
-    int degre;
+    int degree;
     int etat;
 
 }CARTE;
@@ -32,5 +32,10 @@ int endOfTab(LOCFEU *tableau);
 void nextMap(CARTE **initialMap, CARTE **emptyMap);
 bool isInBound(int x, int y);
 void cutTab(LOCFEU *tab, int cutIndex);
+void editColor(ELEMENTS currentElement);
+void editMap(CARTE **infoMap);
+bool setFire(int x, int y, CARTE **map);
+void decrementDegree(int x, int y, CARTE **infoMap);
+void typeToAsh(int x, int y, CARTE **infoMap);
 //int CHIFFRE_ALEATOIRE
 #endif
