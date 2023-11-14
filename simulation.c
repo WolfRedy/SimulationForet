@@ -9,38 +9,52 @@
 #include <assert.h>
 
 
-
-CARTE** creationMatrice(){
+/*
+create2DTable : create a dynamic 2-Dimension table
+@param void
+@return MAP**
+*/
+MAP** create2DTable(){
     
-    CARTE **foret = (CARTE**)malloc(sizeof(CARTE)*longueur);
-    assert( foret != NULL );
+    MAP **forest = (MAP**)malloc(sizeof(MAP)*longueur);
+    assert( forest != NULL );
     for (int i = 0;i<longueur;i++){
-        foret[i] = (CARTE*)malloc(largeur*sizeof(CARTE));
+        forest[i] = (MAP*)malloc(largeur*sizeof(MAP));
     }
-  return foret; 
-}
-LOCFEU* creationTableauFeu(){
-    LOCFEU *tableau = (LOCFEU*)malloc(sizeof(LOCFEU)*(longueur*largeur)+1);
-    return tableau;
+  return forest; 
 }
 
-void affichage_de_la_carte(CARTE **map){
+/*
+createFireTable : create a dynamic table for flames positions
+@param void
+@return FLAMES* 
+*/
+FLAMES* createFlamesTable(){
+    FLAMES *table = (FLAMES*)malloc(sizeof(FLAMES)*(longueur*largeur)+1);
+    return table;
+}
+
+
+void affichage_de_la_carte(MAP **map){
     for (int i = 0; i<longueur; i++){
         for (int j = 0; j<largeur;j++){
-            //ELEMENTS currentElement = map[i][j].type;
             if(map[i][j].etat==1){
                 printf("\033[0;31m"); 
             }else{
                 editColor(map[i][j].type);
             }
-            
-
             printf(" %c",map[i][j].type);
         }
         printf("\033[0m");
         printf("\n");
     }
 }
+
+/*
+editColor : Change the ascii color for an element in the map
+@param currentElement : current element in the map
+@return void 
+*/
 void editColor(ELEMENTS currentElement){
     switch(currentElement){
         case SOL:
@@ -72,10 +86,9 @@ void editColor(ELEMENTS currentElement){
     }    
 }
 
-void remplir_la_carte_manuel(CARTE **map) {
-    //La carte au départ n'est que du sol dans le mode manuel:
+void remplir_la_carte_manuel(MAP **map) {
+    //La MAP au départ n'est que du sol dans le mode manuel:
     int choix;
-
     for (int i = 0; i < longueur; i++) {
         for (int j = 0; j < largeur; j++) {
             map[i][j].type = SOL;
@@ -122,12 +135,18 @@ void remplir_la_carte_manuel(CARTE **map) {
                     affichage_de_la_carte(map);
             }
         }
-    printf("La création de la carte est finie.\n");
+    printf("La création de la MAP est finie.\n");
     printf("------------------------------------------------O\n");
 
 }
 /*-----------------------------------------------------*/
-void remplirMatriceRandom(CARTE **map){
+
+/*
+initRandom2DTable : fill randomly the 2D table
+@param map : a void map
+@return void 
+*/
+void initRandom2DTable(MAP **map){
     srand(time(NULL));
     for (int i = 0; i<longueur; i++){
         for (int j = 0; j<largeur;j++){
@@ -160,56 +179,53 @@ void remplirMatriceRandom(CARTE **map){
                     map[i][j].type=EAU;
                     map[i][j].degree=0;
                     break;
-                /*case 7:
-                    map[i][j].type=CENDRES;
-                    map[i][j].degree=1;
-                    break;
-                case 8:
-                    map[i][j].type=CENDRES_ETEINTES;
-                    map[i][j].degree=0;
-                    break;*/
-    }
+            }
     
         }
     }
 
 }
-void destructionMatrice(CARTE **map){
+
+/*
+free2DTable : free correctly a dynamic 2D table
+@param map : a map
+@return void 
+*/
+void free2DTable(MAP **map){
     for(int i=0;i<longueur;i++){
         free(map[i]);
     }
     free(map);
 }
 
-int chercheVoisinage(CARTE** carte, LOCFEU* tableau){
-    LOCFEU* tempTab = creationTableauFeu();
+/*
+searchNeighbourhood : travel the flames table and search in a 3x3 zone to set Fire
+@param map : the current map
+@param flamesTable : store the different positions of the flames
+@return number of flames 
+*/
+int searchNeighbourhood(MAP** map, FLAMES* flamesTable){
+    FLAMES* tempTab = createFlamesTable();
     int indexTab=0;
     int tempX;
     int tempY;
-    int indexEndTab = endOfTab(tableau);
+    int indexEndTab = endOfTab(flamesTable);
     int cursor = 0;
-    while(tableau[cursor].exit!=-1){
-        tempX = tableau[cursor].x;
-        tempY = tableau[cursor].y;
+    while(flamesTable[cursor].exit!=-1){
+        tempX = flamesTable[cursor].x;
+        tempY = flamesTable[cursor].y;
         for(int i = -1; i<2; i++){
             for(int j = -1; j<2 ;j++){
-                if(tableau[cursor].exit==-1){
-                        tableau[cursor+1].exit=0;
+                if(flamesTable[cursor].exit==-1){
+                        flamesTable[cursor+1].exit=0;
                         goto endOfFor;
                     }
-                //if(isInBound(tempX +i, tempY +j) && carte[tempX + i][tempY + j].etat != 1 && carte[tempX + i][tempY + j].type != SOL && carte[tempX + i][tempY + j].type != EAU ){
-                if(isInBound(tempX +i, tempY +j) && carte[tempX + i][tempY + j].etat != 1){
-                    if(setFire(tempX + i,tempY + j,carte)){
+                if(isInBound(tempX +i, tempY +j) && map[tempX + i][tempY + j].etat != 1){
+                    if(setFire(tempX + i,tempY + j,map)){
                         tempTab[indexTab].x = tempX + i;
-                        tempTab[indexTab].y = tempY + j; //faire en sorte que ça ajoute a la suite de l'autre tableau
+                        tempTab[indexTab].y = tempY + j; 
                         indexTab++;
                     }
-                    //typeToAsh(tempX + i,tempY + j,carte);
-                    //decrementDegree(tempX + i,tempY + j,carte);
-                    
-                    //carte[tempX + i][tempY + j].etat = 1;
-                    //carte[tempX + i][tempY + j].type = FEU;
-                    
                 }
             }
         }
@@ -219,13 +235,13 @@ int chercheVoisinage(CARTE** carte, LOCFEU* tableau){
     endOfFor: 
 
     tempTab[indexTab].exit = -1;
-    tableau[indexEndTab].exit=0;
-    copyTab(tempTab, tableau);
-    //tableau[indexTab + 1].exit=0;
-    editMap(carte);
+    flamesTable[indexEndTab].exit=0;
+
+    copyTab(tempTab, flamesTable);
+    editMap(map);
     return indexTab;
 }
-void copyTab(LOCFEU *tempTab, LOCFEU *newVersionTab){
+void copyTab(FLAMES *tempTab, FLAMES *newVersionTab){
     int index = 0;
     while(tempTab[index].exit!=-1){//Le probleme est sque je vais trop loin, while exit !=-1
         newVersionTab[index].x=tempTab[index].x;
@@ -235,13 +251,13 @@ void copyTab(LOCFEU *tempTab, LOCFEU *newVersionTab){
     }
     newVersionTab[index].exit = -1;
 }
-void showTab(LOCFEU *tableau){
+void showTab(FLAMES *tableau){
     int index = 0;
     for(index; index<(longueur*largeur)+1;index++){
         printf("Coordonnées du tableau n°%d :%d-%d\n",index,tableau[index].x,tableau[index].y);
     }
 }
-void cutTab(LOCFEU *tab, int cutIndex){
+void cutTab(FLAMES *tab, int cutIndex){
     int index = 0;
     for(index; index<cutIndex; index++){
         tab[index].x=tab[index].x;
@@ -250,7 +266,7 @@ void cutTab(LOCFEU *tab, int cutIndex){
     tab[index].exit = -1;
     
 }
-int endOfTab(LOCFEU *tableau){
+int endOfTab(FLAMES *tableau){
     int index = 0;
     for(index; index<(longueur*largeur)+1;index++){
         if(tableau[index].exit==-1){
@@ -259,7 +275,7 @@ int endOfTab(LOCFEU *tableau){
     }
 }
 
-void nextMap(CARTE **initialMap, CARTE **emptyMap){
+void nextMap(MAP **initialMap, MAP **emptyMap){
     for (int i = 0; i<longueur; i++){
         for (int j = 0; j<largeur;j++){
             emptyMap[i][j].type = initialMap[i][j].type;
@@ -276,12 +292,11 @@ bool isInBound(int x, int y){
     return true;
 }
 
-void typeToAsh(int x, int y, CARTE **infoMap){
-    //printf("%d",infoMap[x][y].degree);
+void typeToAsh(int x, int y, MAP **infoMap){
     if(infoMap[x][y].degree == 1){
          infoMap[x][y].type=CENDRES;
 
-    } else if(infoMap[x][y].degree == 0 /*&& infoMap[x][y].type != SOL && infoMap[x][y].type != EAU*/){
+    } else if(infoMap[x][y].degree == 0){
         
         if(infoMap[x][y].type == SOL || infoMap[x][y].type == EAU){
             return;
@@ -292,30 +307,25 @@ void typeToAsh(int x, int y, CARTE **infoMap){
     
 }
 
-void decrementDegree(int x, int y, CARTE **infoMap){
+void decrementDegree(int x, int y, MAP **infoMap){
     int actualDegree = infoMap[x][y].degree;
     actualDegree = actualDegree - 1;
     infoMap[x][y].degree = actualDegree;
-    printf("%d", actualDegree);
     
 }
 
-bool setFire(int x, int y, CARTE **map){
+bool setFire(int x, int y, MAP **map){
     bool isInFire = false;
     if (map[x][y].degree > 0){
         map[x][y].etat = 1;
-        //decrementDegree(x,y,map);
-        //typeToAsh(x,y,map);
         isInFire = true;
     } 
-    else { // if degree == 0 && etat 1
+    else { 
         map[x][y].etat = 0;
     }
-    
-    //typeToAsh(x,y,map);
     return isInFire;
 }
-void editMap(CARTE **infoMap){
+void editMap(MAP **infoMap){
     for (int i = 0; i<longueur; i++){
         for (int j = 0; j<largeur;j++){
             if(infoMap[i][j].etat==1 && infoMap[i][j].degree>0){

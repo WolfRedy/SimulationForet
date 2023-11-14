@@ -11,31 +11,31 @@ typedef struct{
     int degree;
     int etat;
 
-}CARTE;
+}MAP;
 
 typedef struct{
     int x;
     int y;
     int exit;
-}LOCFEU;
+}FLAMES;
 
-CARTE** creationMatrice();
-LOCFEU* creationTableauFeu();
-int chercheVoisinage(CARTE** carte, LOCFEU* tableau);
-void destructionMatrice(CARTE **map);
-void remplir_la_carte_manuel(CARTE **map);
-void remplirMatriceRandom(CARTE **map);
-void affichage_de_la_carte(CARTE **map);
-void copyTab(LOCFEU *tempTab, LOCFEU *newVersionTab);
-void showTab(LOCFEU *tableau);
-int endOfTab(LOCFEU *tableau);
-void nextMap(CARTE **initialMap, CARTE **emptyMap);
+MAP** create2DTable();
+FLAMES* createFlamesTable();
+int searchNeighbourhood(MAP** map, FLAMES* flamesTable);
+void free2DTable(MAP **map);
+void remplir_la_carte_manuel(MAP **map);
+void initRandom2DTable(MAP **map);
+void affichage_de_la_carte(MAP **map);
+void copyTab(FLAMES *tempTab, FLAMES *newVersionTab);
+void showTab(FLAMES *tableau);
+int endOfTab(FLAMES *tableau);
+void nextMap(MAP **initialMap, MAP **emptyMap);
 bool isInBound(int x, int y);
-void cutTab(LOCFEU *tab, int cutIndex);
+void cutTab(FLAMES *tab, int cutIndex);
 void editColor(ELEMENTS currentElement);
-void editMap(CARTE **infoMap);
-bool setFire(int x, int y, CARTE **map);
-void decrementDegree(int x, int y, CARTE **infoMap);
-void typeToAsh(int x, int y, CARTE **infoMap);
+void editMap(MAP **infoMap);
+bool setFire(int x, int y, MAP **map);
+void decrementDegree(int x, int y, MAP **infoMap);
+void typeToAsh(int x, int y, MAP **infoMap);
 //int CHIFFRE_ALEATOIRE
 #endif

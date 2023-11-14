@@ -4,26 +4,20 @@
 #include "pile.h"
 #include "simulation.h" 
 
-void push(pile **laPile, CARTE **map, LOCFEU *tableauFeu, int newFlames){
-//void push(pile **laPile, int valeur){
+void push(pile **laPile, MAP **map, FLAMES *tableauFeu){
     pile *elementCourant = malloc(sizeof(pile));
     if(!elementCourant) exit(EXIT_FAILURE);
-    //elementCourant->adresseCarte = map;
     elementCourant->adresseCarte = map;
     elementCourant->prec = *laPile;
     elementCourant->tabCoordFeu = tableauFeu;
-    elementCourant->nbFlames = newFlames;
+    //elementCourant->nbFlames = newFlames;
     *laPile = elementCourant;
-    //printf("\n aaa %x aaa \n",map);
 }
 
-//CARTE** pop(pile **laPile){
 void pop(pile **laPile){
-    destructionMatrice((*laPile)->adresseCarte);
-    LOCFEU *oldTab;
-    //int index = endOfTab((*laPile)->tabCoordFeu);
-    //cutTab((*laPile)->tabCoordFeu, ((*laPile)->nbFlames )- index);
-    CARTE **map;
+    free2DTable((*laPile)->adresseCarte);
+    FLAMES *oldTab;
+    MAP **map;
     pile *tmp;
     
     tmp = (*laPile)->prec;
