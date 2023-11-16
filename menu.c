@@ -263,7 +263,7 @@ void automaticSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIte
 
         searchNeighbourhood(carteSuivante,tableauSuivant);
         push(&pileSimulation,carteSuivante, tableauSuivant);
-        refresh();
+        //refresh();
         affichage_de_la_carte(pileSimulation->adresseCarte);
     }
 
