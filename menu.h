@@ -3,10 +3,12 @@
 #include "pile.h"
 #include "simulation.h"
 
-MAP** affichageMenu();
+MAP** initMap();
 void size();
 FLAMES* initFlame(MAP** initialMap);
 int iterations();
-void menuSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration);
+void launchMenu();
+void modSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration);
 void manualSimulation(pile* pileSimulation,MAP** carteInitial,int nombreIteration);
+void automaticSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration);
 #endif

@@ -1,14 +1,30 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <unistd.h>
+#include <ncurses.h>
+
+//#include <conio.h>
 #include "ext_glob.h"
 #include "simulation.h"
 #include "pile.h"
+#include "menu.h"
 #define CLEAR_STDIN { int c; while((c = getchar()) != '\n' && c != EOF); }
 
 
+void launchMenu(){
+    pile* pileSimulation = NULL;
+    MAP** carteInitial = initMap(); // Create the first map
+    affichage_de_la_carte(carteInitial);
+    FLAMES* coordFeu = initFlame(carteInitial); // Create the first table of flames
+    affichage_de_la_carte(carteInitial);
+    push(&pileSimulation,carteInitial, coordFeu);
+    modSimulation(pileSimulation, carteInitial, iterations());
+    free2DTable(carteInitial);
+}
 
-MAP** affichageMenu() {
+MAP** initMap() {
+    size();
     while(1) {
 //Menu du progamme:
         int choix;
@@ -34,12 +50,12 @@ MAP** affichageMenu() {
             }
             case 2: {
                 printf("Remplissage manuel en cours ...\n");
-                return choix = 2;
+                //return choix = 2;
                 break;
             }
             case 3: {
                 printf("Exit\n");
-                return choix = 3;
+                exit(0);
                 break;
             }
             default:
@@ -81,9 +97,9 @@ FLAMES* initFlame(MAP** initialMap){
     coordFeu->x=positionFlameX;
     coordFeu->y=positionFlameY;
     coordFeu[1].exit=-1;
-    initialMap[positionFlameX][positionFlameY].type = '*';
-    initialMap[positionFlameX][positionFlameY].degree = 4;
-    initialMap[positionFlameX][positionFlameY].etat = 1;//Faire le cas si ça tombe sur de l'eau
+    initialMap[positionFlameX][positionFlameY].type = 'F';
+    initialMap[positionFlameX][positionFlameY].degree = 5;
+    initialMap[positionFlameX][positionFlameY].etat = 1; //Faire le cas si ça tombe sur de l'eau
     editMap(initialMap);
     return coordFeu;
 }
@@ -95,7 +111,9 @@ int iterations(){
     return nbIterations;
 }
 
-void menuSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration, int nbFlames){
+void modSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration){
+    //MAP** carteInitial = NULL;
+    //FLAMES* coordFeu = NULL;
     while(1) {
 //Menu du progamme:
         int choix;
@@ -106,6 +124,8 @@ void menuSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteratio
         printf("Press 1 - Simulation Manuel\n");
         printf("Press 2 - Simulation automatique\n");
         printf("Press 3 - Plus court chemin\n");
+        printf("Press 4 - Revenir en arrière\n");
+        printf("Press 5 - Quitter\n");
         printf("///////////////////////////////////////////////\n");
         printf("Enter votre choix:\n");
 
@@ -114,19 +134,26 @@ void menuSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteratio
         switch (choix) {
             case 1: {
                 printf("Début simulation manuel...\n");
-                manualSimulation(pileSimulation, carteInitial, nombreIteration, nbFlames);
-                return;
+                manualSimulation(pileSimulation, carteInitial, nombreIteration);
                 break;
             }
             case 2: {
                 printf("Début simulation automatique...\n");
-                //return choix = 2;
+                automaticSimulation(pileSimulation, carteInitial, nombreIteration);
                 break;
             }
             case 3: {
                 printf("Plus cours chemin\n");
-                return choix = 3;
                 break;
+            }
+            case 4: {
+                free2DTable(carteInitial);
+                launchMenu();
+                break;
+            }
+            case 5: {
+                printf("Merci d'avoir utilisé notre application ! \n");
+                return;
             }
             default:
                 printf("wrong Input\n");
@@ -136,7 +163,7 @@ void menuSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteratio
     }
 }
 
-void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration, int nbFlames){
+void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration){
     MAP** carteSuivante = NULL;
     FLAMES* tableauSuivant = NULL;
     char choix;
@@ -211,7 +238,7 @@ void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIterat
             tableauSuivant = createFlamesTable();
             copyTab(pileSimulation->tabCoordFeu, tableauSuivant);
 
-            nbFlames = searchNeighbourhood(carteSuivante,tableauSuivant);
+            searchNeighbourhood(carteSuivante,tableauSuivant);
             push(&pileSimulation,carteSuivante, tableauSuivant);
             affichage_de_la_carte(pileSimulation->adresseCarte);
             i++;
@@ -219,4 +246,25 @@ void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIterat
         }
         
     }
+}
+void automaticSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration){
+    MAP** carteSuivante = NULL;
+    FLAMES* tableauSuivant = NULL;
+    
+    for(int index = 1; index<nombreIteration+1; index++){
+        
+        sleep(2);
+        
+        printf("\n ------%d\n",index);
+        carteSuivante = create2DTable();
+        nextMap(pileSimulation->adresseCarte,carteSuivante);
+        tableauSuivant = createFlamesTable();
+        copyTab(pileSimulation->tabCoordFeu, tableauSuivant);
+
+        searchNeighbourhood(carteSuivante,tableauSuivant);
+        push(&pileSimulation,carteSuivante, tableauSuivant);
+        refresh();
+        affichage_de_la_carte(pileSimulation->adresseCarte);
+    }
+
 }

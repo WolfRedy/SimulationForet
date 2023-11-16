@@ -8,6 +8,8 @@
 #include "pile.h"
 #include <assert.h>
 
+#include <ncurses.h>
+
 
 /*
 create2DTable : create a dynamic 2-Dimension table
