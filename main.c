@@ -13,20 +13,33 @@ int main(int argc, char *argv[])
          /* Déclaration du widget */
         GtkWidget *pWindow;
         GtkWidget *pLabel;
+        GtkWidget *pHBox;
+        GtkWidget *pVBox;
+        GtkWidget *pButtons[2];
         gtk_init(&argc,&argv);
         
         /* Création de la fenêtre */
         pWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         gtk_window_set_title(GTK_WINDOW(pWindow), "Simulation Incendie");
         gtk_window_set_position(GTK_WINDOW(pWindow), GTK_WIN_POS_CENTER);
-        gtk_window_set_default_size(GTK_WINDOW(pWindow), 320,200);
-        gtk_window_set_resizable(GTK_WINDOW(pWindow),FALSE);
+        gtk_window_set_default_size(GTK_WINDOW(pWindow), 620,300);
+        gtk_window_set_resizable(GTK_WINDOW(pWindow),TRUE);
+        
+        pVBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+        pHBox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+        gtk_box_set_homogeneous(GTK_BOX(pHBox), TRUE);
+        gtk_container_add(GTK_CONTAINER(pWindow), pVBox);
+        pLabel = gtk_label_new("Forest creation");
+        pButtons[0] = gtk_button_new_with_label("From a file");
+        pButtons[1] = gtk_button_new_with_label("Manual forest creation");
 
-        /* Création d'un label */
-        pLabel = gtk_label_new("Hello World");
+        gtk_box_pack_start(GTK_BOX(pVBox), pLabel, TRUE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(pVBox), pHBox, TRUE, TRUE, 0 );
 
-        /* Insertion du label dans pWindow */
-        gtk_container_add(GTK_CONTAINER(pWindow), pLabel);
+        gtk_box_pack_start(GTK_BOX(pHBox), pButtons[0], TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(pHBox), pButtons[1], TRUE, TRUE, 0);
+
+        
 
         /* Connexion du signal "destroy" */
         g_signal_connect(G_OBJECT(pWindow), "destroy", G_CALLBACK(OnDestroy), NULL);
