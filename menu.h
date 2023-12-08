@@ -11,4 +11,5 @@ void launchMenu();
 void modSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration);
 void manualSimulation(pile* pileSimulation,MAP** carteInitial,int nombreIteration);
 void automaticSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration);
+//void appDijkstra(carteInitial,pointD, pointA);
 #endif

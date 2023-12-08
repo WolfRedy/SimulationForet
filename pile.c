@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "ext_glob.h"
 #include "pile.h"
 #include "simulation.h" 

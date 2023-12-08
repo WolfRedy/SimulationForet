@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <time.h> 
 #include <stdbool.h>
+
 #include <stdlib.h> 
 #include "simulation.h"
 #include "ext_glob.h"
@@ -22,6 +23,7 @@ MAP** create2DTable(){
     assert( forest != NULL );
     for (int i = 0;i<longueur;i++){
         forest[i] = (MAP*)malloc(largeur*sizeof(MAP));
+        assert( forest[i] != NULL );
     }
   return forest; 
 }
@@ -40,10 +42,18 @@ FLAMES* createFlamesTable(){
 void affichage_de_la_carte(MAP **map){
     for (int i = 0; i<longueur; i++){
         for (int j = 0; j<largeur;j++){
-            if(map[i][j].etat==1){
-                printf("\033[0;31m"); 
-            }else{
-                editColor(map[i][j].type);
+            int etat = map[i][j].etat;
+            switch(etat){
+                case 1:
+                    printf("\033[0;31m"); 
+                    break;
+                case -1: //depart
+                    printf("\e[1;92m");
+                    break;
+                case -5: //destination
+                    printf("\033[0;31m");
+                default:
+                    editColor(map[i][j].type);
             }
             printf(" %c",map[i][j].type);
         }
@@ -287,12 +297,7 @@ void nextMap(MAP **initialMap, MAP **emptyMap){
     }
 }
 
-bool isInBound(int x, int y){
-    if(x>=longueur || y>=largeur || x<0 || y<0){
-        return false;
-    }
-    return true;
-}
+
 
 void typeToAsh(int x, int y, MAP **infoMap){
     if(infoMap[x][y].degree == 1){

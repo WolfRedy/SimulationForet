@@ -9,5 +9,7 @@
 
 _EXTERN int longueur;
 _EXTERN int largeur;
-
+_EXTERN int positionFlameX;
+_EXTERN int positionFlameY;
+bool isInBound(int x, int y);
 #endif

@@ -30,7 +30,7 @@ void copyTab(FLAMES *tempTab, FLAMES *newVersionTab);
 void showTab(FLAMES *tableau);
 int endOfTab(FLAMES *tableau);
 void nextMap(MAP **initialMap, MAP **emptyMap);
-bool isInBound(int x, int y);
+
 void cutTab(FLAMES *tab, int cutIndex);
 void editColor(ELEMENTS currentElement);
 void editMap(MAP **infoMap);

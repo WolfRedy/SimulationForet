@@ -6,9 +6,12 @@
 
 //#include <conio.h>
 #include "ext_glob.h"
-#include "simulation.h"
+
+
 #include "pile.h"
 #include "menu.h"
+#include "dijkstra.h"
+#include "simulation.h"
 #define CLEAR_STDIN { int c; while((c = getchar()) != '\n' && c != EOF); }
 
 
@@ -67,18 +70,18 @@ MAP** initMap() {
 }
 
 void size(){
-    int valeur = 0;
+    //int valeur = 0;
     printf("Choisir la longeur : \n");
-    scanf("%d", &valeur);
-    longueur = valeur;
+    scanf("%d", &longueur);
+    //longueur = valeur;
     printf("Choisir la largeur : \n");
-    scanf("%d", &valeur);
-    largeur = valeur;
+    scanf("%d", &largeur);
+    //largeur = valeur;
 }
 
 FLAMES* initFlame(MAP** initialMap){
     FLAMES* coordFeu = createFlamesTable();
-    int positionFlameX,positionFlameY;
+    int flameX,flameY;
     printf("Coordonnée x du départ de feu");
     CLEAR_STDIN;
     scanf("%d",&positionFlameX);//optimiser ça plus tard
@@ -144,6 +147,9 @@ void modSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration
             }
             case 3: {
                 printf("Plus cours chemin\n");
+                
+                //appDijkstra(carteInitial,pointD, pointA);
+                launchDijkstra( carteInitial);
                 break;
             }
             case 4: {
@@ -180,8 +186,8 @@ void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIterat
         
         CLEAR_STDIN;
         scanf("%c",&choix);
-       
-        if(choix == '1'){
+
+        if(choix == '1' && i>0 ){
             printf("\nVous avez choisi de revenir en arrière\n");
             pop(&pileSimulation);
             //view(pileSimulation);
@@ -221,9 +227,8 @@ void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIterat
             scanf("%d",&editDegree);
             printf("STATE : ? \n"); // Test 0 or 1 
             CLEAR_STDIN;
-            while(scanf("%c",&editState) || editState > 1 || editState < 0){
-                printf("La valeur doit être 0 ou 1");
-            }
+            scanf("%c",&editState)
+
             pileSimulation->adresseCarte[editPositionX][editPositionY].type = editType;
             pileSimulation->adresseCarte[editPositionX][editPositionY].degree = editDegree;
             pileSimulation->adresseCarte[editPositionX][editPositionY].etat = editState;
