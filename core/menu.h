@@ -1,7 +1,7 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 #include "pile.h"
-#include "simulation.h"
+#include "../simulation/simulation.h"
 
 MAP** initMap();
 void size();

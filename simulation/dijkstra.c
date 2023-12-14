@@ -3,8 +3,9 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <limits.h>
+#define CLEAR_STDIN { int c; while((c = getchar()) != '\n' && c != EOF); }
 
-#include "ext_glob.h"
+#include "../core/ext_glob.h"
 #include "dijkstra.h"
 
 void launchDijkstra(MAP** map) {
@@ -14,14 +15,24 @@ void launchDijkstra(MAP** map) {
     int positionDestinationY = 0;
     printf("Merci de rentrer votre point de destination au format: <x y> \nExemple: 2 5\n");
     scanf("%d %d",&positionDestinationX,&positionDestinationY);
+    while(!isInBound(positionDestinationX,positionDestinationY)){
+        printf("Error - Out Of Bound\n");
+        printf("Coordonnée x d'arrivé du feu");
+        CLEAR_STDIN;
+        scanf("%d",&positionDestinationX);//optimiser ça plus tard
+        printf("Coordonnée y d'arrivé du feu");
+        CLEAR_STDIN;
+        scanf("%d",&positionDestinationY);  
+    }
     Vertex source = createVertex(positionFlameX, positionFlameY);
     Vertex destination = createVertex(positionDestinationX, positionDestinationY);
     dijkstraMap[positionFlameX][positionFlameY].type = 'F';
     dijkstraMap[positionFlameX][positionFlameY].etat = 1;
     dijkstraMap[positionDestinationX][positionDestinationY].type = 'F';
     dijkstraMap[positionDestinationX][positionDestinationY].etat = -1;
-    
+    printf("--- Carte Initial ---\n");
     affichage_de_la_carte(dijkstraMap);
+    
     dijkstra(dijkstraMap, source, destination);
    
     free2DTable(dijkstraMap);
@@ -94,7 +105,8 @@ void dijkstra(MAP** map, Vertex source, Vertex destination) {
                 }
             }
         }
-    }    
+    }
+    printf("--- Carte après dijkstra ---\n");
     affichage_de_la_carte(map);
     isReached(source, destination, distance);
 }

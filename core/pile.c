@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "ext_glob.h"
 #include "pile.h"
-#include "simulation.h" 
+#include "../simulation/simulation.h" 
 
 void push(pile **laPile, MAP **map, FLAMES *tableauFeu){
     pile *elementCourant = malloc(sizeof(pile));

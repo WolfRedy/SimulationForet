@@ -1,6 +1,6 @@
 #ifndef _PILE_H_
 #define _PILE_H_
-#include "simulation.h"
+#include "../simulation/simulation.h"
 typedef struct pile
         {
                 MAP** adresseCarte;

@@ -1,26 +1,18 @@
 CC = gcc
-EXEC = start
-OBJ = main.o menu.o simulation.o pile.o
-SRC = main.c
+TARGET = fire
+SRC_DIR = main core simulation
+SRC = $(wildcard $(addsuffix /*.c, $(SRC_DIR)))
+OBJ = $(SRC:.c=.o)
 
-all: $(EXEC)
-    rm -rf *.o
-    ./$(EXEC)
+CFLAGS = 
 
-main.o : main.c
-    $(CC) -o main.o -c main.c
+all: $(TARGET)
 
-menu.o : menu.h menu.c
-    $(CC) -o menu.o  -c menu.c
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ) -ggdb -lncurses `pkg-config --cflags --libs gtk+-3.0`
 
-simulation.o : simulation.h simulation.c
-    $(CC) -o simulation.o  -c simulation.c
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@  -ggdb -lncurses `pkg-config --cflags --libs gtk+-3.0`
 
-pile.o : pile.c
-    $(CC) -o pile.o  -c pile.c
-
-$(EXEC) : $(OBJ)
-    $(CC) -o $(EXEC) main.o menu.o simulation.o pile.o
-
-clean :
-    rm -rf *.o
+clean:
+	rm -rf $(OBJ) $(TARGET)

@@ -10,8 +10,8 @@
 
 #include "pile.h"
 #include "menu.h"
-#include "dijkstra.h"
-#include "simulation.h"
+#include "../simulation/dijkstra.h"
+#include "../simulation/simulation.h"
 #define CLEAR_STDIN { int c; while((c = getchar()) != '\n' && c != EOF); }
 
 
@@ -53,7 +53,7 @@ MAP** initMap() {
             }
             case 2: {
                 printf("Remplissage manuel en cours ...\n");
-                //return choix = 2;
+                remplir_la_carte_manuel(carteInitial);
                 break;
             }
             case 3: {
@@ -227,7 +227,7 @@ void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIterat
             scanf("%d",&editDegree);
             printf("STATE : ? \n"); // Test 0 or 1 
             CLEAR_STDIN;
-            scanf("%c",&editState)
+            scanf("%c",&editState);
 
             pileSimulation->adresseCarte[editPositionX][editPositionY].type = editType;
             pileSimulation->adresseCarte[editPositionX][editPositionY].degree = editDegree;
@@ -244,6 +244,10 @@ void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIterat
             copyTab(pileSimulation->tabCoordFeu, tableauSuivant);
 
             searchNeighbourhood(carteSuivante,tableauSuivant);
+            if(isFinished(carteSuivante,pileSimulation->adresseCarte)){
+                printf("test");
+                i=nombreIteration;
+            }
             push(&pileSimulation,carteSuivante, tableauSuivant);
             affichage_de_la_carte(pileSimulation->adresseCarte);
             i++;
@@ -267,6 +271,7 @@ void automaticSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIte
         copyTab(pileSimulation->tabCoordFeu, tableauSuivant);
 
         searchNeighbourhood(carteSuivante,tableauSuivant);
+
         push(&pileSimulation,carteSuivante, tableauSuivant);
         //refresh();
         affichage_de_la_carte(pileSimulation->adresseCarte);

@@ -5,8 +5,8 @@
 
 #include <stdlib.h> 
 #include "simulation.h"
-#include "ext_glob.h"
-#include "pile.h"
+#include "../core/ext_glob.h"
+#include "../core/pile.h"
 #include <assert.h>
 
 #include <ncurses.h>
@@ -348,6 +348,19 @@ void editMap(MAP **infoMap){
             
         }
     }
+}
+bool isFinished(MAP **currentMap, MAP **previousMap){
+    bool state = false;
+    for (int i = 0; i<longueur; i++){
+        for (int j = 0; j<largeur;j++){
+            //printf("degree %d %d",currentMap[i][j].degree,previousMap[i][j].degree);
+            if(currentMap[i][j].degree!=previousMap[i][j].degree ){   
+                return false;
+            }
+        }
+    }
+    //printf("%d",state);
+    return true;
 }
 
 
