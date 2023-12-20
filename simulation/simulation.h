@@ -3,6 +3,7 @@
 #define _SIMULATION_H_
 //#include "pile.h"
 #include <stdbool.h>
+#include <stdio.h>
 typedef enum {SOL = '+', ARBRE = '*', FEUILLE = ' ', ROCHE = '#', HERBE = 'x', EAU = '/', CENDRES = '-', CENDRES_ETEINTES = '@', FEU = 'F'}ELEMENTS;
 
 typedef struct{
@@ -37,5 +38,8 @@ void editMap(MAP **infoMap);
 bool setFire(int x, int y, MAP **map);
 void decrementDegree(int x, int y, MAP **infoMap);
 void typeToAsh(int x, int y, MAP **infoMap);
+void saveToFile(MAP **map, FILE *file, int index);
+void initTableFromFile(MAP **initialMap, FILE *file);
+void createFromCharacter(char currentChar, MAP **map,int i, int j);
 //int CHIFFRE_ALEATOIRE
 #endif

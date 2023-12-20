@@ -11,7 +11,7 @@ void initToZero(int** distance, int** visited, Vertex source);
 int** createVisited();
 int** createDistance();
 void dijkstra(MAP** map, Vertex source, Vertex destination) ;
-void isReached(Vertex source, Vertex destination, int** distance);
+void isReached(MAP** map, Vertex source, Vertex destination, int** distance);
 
 
 #endif

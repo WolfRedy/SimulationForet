@@ -37,7 +37,79 @@ FLAMES* createFlamesTable(){
     FLAMES *table = (FLAMES*)malloc(sizeof(FLAMES)*(longueur*largeur)+1);
     return table;
 }
+void saveToFile(MAP **map, FILE *file, int index) {
+    fprintf(file, "----- ---- Etape %d ---- -----\n",index);
+    for (int i = 0; i<longueur; i++){
+        for (int j = 0; j<largeur;j++){
+            fprintf(file, "%c",map[i][j].type);
+        }
+        fprintf(file, "\n");
+    }
+    fprintf(file, "\n");
+}
+void initTableFromFile(MAP **initialMap, FILE *file){
+    for (int i = 0; i < longueur; i++) {
+        for (int j = 0; j < largeur; j++) {
+            int caractere = getc(file);
+            while (caractere == '\n' || caractere == '\r') {
+                caractere = getc(file);
+            }
+            if (caractere == EOF) {
+                fprintf(stderr, "Le fichier ne contient pas suffisamment de caractères.\n");
+                fclose(file);
+                return; 
+            }
+            createFromCharacter((char)caractere, initialMap, i, j);
+        }
+    }
+}
+void createFromCharacter(char currentChar, MAP **map,int i, int j){
+    switch(currentChar){
+                case '+':
+                    map[i][j].type=SOL;
+                    map[i][j].degree=0;
+                    break;
+                case '*':
+                    map[i][j].type=ARBRE;
+                    map[i][j].degree=4;
+                    break;
+                case ' ':
+                    map[i][j].type=FEUILLE;
+                    map[i][j].degree=2;
 
+                    break;
+                case '#':
+                    map[i][j].type=ROCHE;
+                    map[i][j].degree=5;
+
+                    break;
+                case 'x':
+                    map[i][j].type=HERBE;
+                    map[i][j].degree=3;
+
+                case '/':
+                    map[i][j].type=EAU;
+                    map[i][j].degree=0;
+                    break;
+                case '-':
+                    map[i][j].type=CENDRES;
+                    map[i][j].degree=1;
+                    break;
+                case '@':
+                    map[i][j].type=CENDRES_ETEINTES;
+                    map[i][j].degree=0;
+                    break;
+                case 'F':
+                    map[i][j].type=FEU;
+                    map[i][j].degree=2;
+                    map[i][j].etat=1;
+                    
+                    break;
+                default:
+                    map[i][j].type=HERBE;
+                    map[i][j].degree=3;
+            }
+}
 
 void affichage_de_la_carte(MAP **map){
     for (int i = 0; i<longueur; i++){
@@ -60,6 +132,7 @@ void affichage_de_la_carte(MAP **map){
         printf("\033[0m");
         printf("\n");
     }
+    
 }
 
 /*
@@ -176,16 +249,15 @@ void initRandom2DTable(MAP **map){
                 case 3:
                     map[i][j].type=FEUILLE;
                     map[i][j].degree=2;
-
                     break;
                 case 4:
                     map[i][j].type=ROCHE;
                     map[i][j].degree=5;
-
                     break;
                 case 5:
                     map[i][j].type=HERBE;
                     map[i][j].degree=3;
+                    break;
 
                 case 6:
                     map[i][j].type=EAU;
@@ -310,6 +382,8 @@ void typeToAsh(int x, int y, MAP **infoMap){
         }
         
          infoMap[x][y].type=CENDRES_ETEINTES;
+         infoMap[x][y].etat=0;
+
     }
     
 }
@@ -344,6 +418,7 @@ void editMap(MAP **infoMap){
             }
             if(infoMap[i][j].degree == 0 && infoMap[i][j].etat==1){
                 infoMap[i][j].type=CENDRES_ETEINTES;
+                infoMap[i][j].etat=0;
             }
             
         }
@@ -353,13 +428,11 @@ bool isFinished(MAP **currentMap, MAP **previousMap){
     bool state = false;
     for (int i = 0; i<longueur; i++){
         for (int j = 0; j<largeur;j++){
-            //printf("degree %d %d",currentMap[i][j].degree,previousMap[i][j].degree);
             if(currentMap[i][j].degree!=previousMap[i][j].degree ){   
                 return false;
             }
         }
     }
-    //printf("%d",state);
     return true;
 }
 

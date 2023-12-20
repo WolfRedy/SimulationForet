@@ -1,26 +1,32 @@
+// Help with https://rosettacode.org/wiki/Dijkstra%27s_algorithm#C and https://fr.wikipedia.org/wiki/Algorithme_de_Dijkstra
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
 #include <limits.h>
-#define CLEAR_STDIN { int c; while((c = getchar()) != '\n' && c != EOF); }
-
 #include "../core/ext_glob.h"
 #include "dijkstra.h"
+#define CLEAR_STDIN { int c; while((c = getchar()) != '\n' && c != EOF); }
+
 
 void launchDijkstra(MAP** map) {
     MAP** dijkstraMap = create2DTable();
     nextMap(map, dijkstraMap);
     int positionDestinationX = 0;
     int positionDestinationY = 0;
-    printf("Merci de rentrer votre point de destination au format: <x y> \nExemple: 2 5\n");
-    scanf("%d %d",&positionDestinationX,&positionDestinationY);
+    printf("--> Coordonnée x d'arrivé du feu\n");
+    CLEAR_STDIN;
+    scanf("%d",&positionDestinationX);
+    printf("--> Coordonnée y d'arrivé du feu\n");
+    CLEAR_STDIN;
+    scanf("%d",&positionDestinationY); 
+
     while(!isInBound(positionDestinationX,positionDestinationY)){
-        printf("Error - Out Of Bound\n");
-        printf("Coordonnée x d'arrivé du feu");
+        printf("### Error - Out Of Bound ###\n");
+        printf("--> Coordonnée x d'arrivé du feu\n");
         CLEAR_STDIN;
-        scanf("%d",&positionDestinationX);//optimiser ça plus tard
-        printf("Coordonnée y d'arrivé du feu");
+        scanf("%d",&positionDestinationX);
+        printf("--> Coordonnée y d'arrivé du feu\n");
         CLEAR_STDIN;
         scanf("%d",&positionDestinationY);  
     }
@@ -32,11 +38,8 @@ void launchDijkstra(MAP** map) {
     dijkstraMap[positionDestinationX][positionDestinationY].etat = -1;
     printf("--- Carte Initial ---\n");
     affichage_de_la_carte(dijkstraMap);
-    
     dijkstra(dijkstraMap, source, destination);
-   
     free2DTable(dijkstraMap);
-    return 0;
 }
 
 Vertex createVertex(int x, int y) {
@@ -55,12 +58,17 @@ void initToZero(int** distance, int** visited, Vertex source){
     distance[source.x][source.y] = 0;
 }
 
-void isReached(Vertex source, Vertex destination, int** distance){
+void isReached(MAP** map, Vertex source, Vertex destination, int** distance){
     if (distance[destination.x][destination.y] != INT_MAX){
         printf("Distance de %d éléments entre [%d,%d] et [%d,%d] !\n",distance[destination.x][destination.y], source.x, source.y, destination.x, destination.y);
     }
     else{
-        printf("Impossible, aucun chemin possible entre [%d,%d] et [%d,%d]\n",source.x, source.y, destination.x, destination.y);
+        if(map[destination.x][destination.y].degree==0){
+             printf("L'élément situé à [%d,%d] est non-inflammables\n",destination.x, destination.y);
+        }else{
+            printf("Impossible, aucun chemin possible entre [%d,%d] et [%d,%d]\n",source.x, source.y, destination.x, destination.y);
+        }
+        
     }
 }
 void dijkstra(MAP** map, Vertex source, Vertex destination) {
@@ -86,7 +94,7 @@ void dijkstra(MAP** map, Vertex source, Vertex destination) {
         Vertex myVertex;
         for (int i = 0; i < longueur; i++) {
             for (int j = 0; j < largeur; j++) {
-                if (visited[i][j] == 0 && distance[i][j] < smartDistance) {
+                if (distance[i][j] < smartDistance && visited[i][j] == 0) {
                     smartDistance = distance[i][j];
                     myVertex = createVertex(i, j);
                 }
@@ -108,5 +116,5 @@ void dijkstra(MAP** map, Vertex source, Vertex destination) {
     }
     printf("--- Carte après dijkstra ---\n");
     affichage_de_la_carte(map);
-    isReached(source, destination, distance);
+    isReached(map, source, destination, distance);
 }

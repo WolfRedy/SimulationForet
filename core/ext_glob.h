@@ -6,7 +6,7 @@
 #else
 #define _EXTERN
 #endif
-
+#include "../core/ext_glob.h"
 _EXTERN int longueur;
 _EXTERN int largeur;
 _EXTERN int positionFlameX;
