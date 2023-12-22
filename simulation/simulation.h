@@ -4,8 +4,8 @@
 //#include "pile.h"
 #include <stdbool.h>
 #include <stdio.h>
-typedef enum {SOL = '+', ARBRE = '*', FEUILLE = ' ', ROCHE = '#', HERBE = 'x', EAU = '/', CENDRES = '-', CENDRES_ETEINTES = '@', FEU = 'F'}ELEMENTS;
 
+typedef enum {SOL = '+', ARBRE = '*', FEUILLE = ' ', ROCHE = '#', HERBE = 'x', EAU = '/', CENDRES = '-', CENDRES_ETEINTES = '@', FEU = 'F'}ELEMENTS;
 typedef struct{
 
     ELEMENTS type;
@@ -13,7 +13,6 @@ typedef struct{
     int etat;
 
 }MAP;
-
 typedef struct{
     int x;
     int y;

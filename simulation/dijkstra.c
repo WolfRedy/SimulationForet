@@ -41,13 +41,24 @@ void launchDijkstra(MAP** map) {
     dijkstra(dijkstraMap, source, destination);
     free2DTable(dijkstraMap);
 }
-
+/*
+createVertex : create a Vertex with x and y coordinates
+@param int x,y
+@return Vertex
+*/
 Vertex createVertex(int x, int y) {
     Vertex Vertex;
     Vertex.x = x;
     Vertex.y = y;
+    
     return Vertex;
 }
+/*
+initToZero : initialize each element in distance2D to INT_MAX(inf) and each element of visited2D to 0
+@param int** distance, int** visited
+@param Vertex source : departure point
+@return void
+*/
 void initToZero(int** distance, int** visited, Vertex source){
     for (int i = 0; i < longueur; i++) {
         for (int j = 0; j < largeur; j++) {
@@ -58,6 +69,14 @@ void initToZero(int** distance, int** visited, Vertex source){
     distance[source.x][source.y] = 0;
 }
 
+/*
+isReached : initialize each element in distance2D to INT_MAX(inf) and each element of visited2D to 0
+@param int** distance
+@param MAP** map : the forest 2D table
+@param Vertex source : departure point
+@param Vertex destination : destination point
+@return void
+*/
 void isReached(MAP** map, Vertex source, Vertex destination, int** distance){
     if (distance[destination.x][destination.y] != INT_MAX){
         printf("Distance de %d éléments entre [%d,%d] et [%d,%d] !\n",distance[destination.x][destination.y], source.x, source.y, destination.x, destination.y);
@@ -71,37 +90,47 @@ void isReached(MAP** map, Vertex source, Vertex destination, int** distance){
         
     }
 }
+
+/*
+createVisited : create a 2D int table
+@param 
+@return int**
+*/
+int** createInt2DTable(){
+    int** int2DTable = ( int **) malloc(longueur * sizeof( int*));
+    assert( int2DTable != NULL );
+    for(int index = 0;index < longueur;index++) {
+        int2DTable[index] = (int*) malloc(largeur * sizeof(int));
+        assert( int2DTable[index] != NULL );
+    }
+    return int2DTable;
+}
+
+/*
+dijkstra : main part of the algorithm of dijkstra
+@param MAP** map, Vertex source, Vertex destination
+@return void
+*/
 void dijkstra(MAP** map, Vertex source, Vertex destination) {
-
-    int** visited = ( int **) malloc(longueur * sizeof( int*));
-    assert( visited != NULL );
-    for(int index = 0;index < longueur;index++) {
-        visited[index] = (int*) malloc(largeur * sizeof(int));
-        assert( visited[index] != NULL );
-    }
-
-    int** distance = ( int **) malloc(longueur * sizeof( int*));
-    assert( distance != NULL );
-    for(int index = 0;index < longueur;index++) {
-        distance[index] = (int*) malloc(largeur * sizeof(int));
-        assert( distance[index] != NULL );
-    }
-
+    /*a modified version of Dijkstra's algorithm, 
+    exploring a 2D grid represented by the map array.*/
+    int** visited = createInt2DTable();
+    int** distance = createInt2DTable();
     initToZero(distance, visited,source);
 
     for (int index = 0; index < longueur * largeur - 1; index++){
-        int smartDistance = INT_MAX;
         Vertex myVertex;
+        bool carry = false;
+        int smartDistance = INT_MAX;
         for (int i = 0; i < longueur; i++) {
             for (int j = 0; j < largeur; j++) {
                 if (distance[i][j] < smartDistance && visited[i][j] == 0) {
+                    myVertex = createVertex(i,j);
                     smartDistance = distance[i][j];
-                    myVertex = createVertex(i, j);
                 }
             }
         }
         visited[myVertex.x][myVertex.y] = 1;
-
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (isInBound(myVertex.x + i, myVertex.y + j) && distance[myVertex.x][myVertex.y] + 1 < distance[myVertex.x + i][myVertex.y + j] && visited[myVertex.x + i][myVertex.y + j] == 0 && distance[myVertex.x][myVertex.y] != INT_MAX ) {

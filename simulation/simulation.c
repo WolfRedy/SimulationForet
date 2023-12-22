@@ -27,7 +27,6 @@ MAP** create2DTable(){
     }
   return forest; 
 }
-
 /*
 createFireTable : create a dynamic table for flames positions
 @param void
@@ -55,7 +54,7 @@ void initTableFromFile(MAP **initialMap, FILE *file){
                 caractere = getc(file);
             }
             if (caractere == EOF) {
-                fprintf(stderr, "Le fichier ne contient pas suffisamment de caractères.\n");
+                //fprintf(stderr, "Le fichier ne contient pas suffisamment de caractères.\n");
                 fclose(file);
                 return; 
             }
@@ -152,7 +151,7 @@ void editColor(ELEMENTS currentElement){
             printf("\033[0;32m");
             break;
         case ROCHE:
-            printf("\033[0;30m");
+            printf("\e[0;37m");
             break;
         case HERBE:
             printf("\033[0;32m");
@@ -176,7 +175,7 @@ void remplir_la_carte_manuel(MAP **map) {
     int choix;
     for (int i = 0; i < longueur; i++) {
         for (int j = 0; j < largeur; j++) {
-            map[i][j].type = SOL;
+            map[i][j].type = HERBE;
         }
     }
     
@@ -280,6 +279,9 @@ void free2DTable(MAP **map){
         free(map[i]);
     }
     free(map);
+}
+void freeFlamesTable(FLAMES* table){
+    free(table);
 }
 
 /*

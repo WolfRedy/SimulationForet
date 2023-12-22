@@ -149,7 +149,7 @@ void modSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIteration
         int choix;
         printf("\n");
         printf("1 - ");
-        printf("Choix du mode de la simulation : \n");
+        printf("Menu principal : \n");
         printf("///////////////////////////////////////////////\n");
         printf("Press 1 - Simulation Manuel\n");
         printf("Press 2 - Simulation automatique\n");
@@ -207,7 +207,7 @@ void saveExperience(pile* pileSimulation, int nombreIteration){
     strftime(fileToSave, sizeof(fileToSave), "sauvegarde_%Y_%m_%d_%H:%M:%S.txt", tm_info);
     FILE *file = fopen(fileToSave, "w");
     if (file == NULL) {
-        fprintf(stderr, "### Impossible d'ouvrir le file de sauvegarde. ###\n");
+        fprintf(stderr, "### Impossible d'ouvrir le fichier de sauvegarde. ###\n");
         return;
     }
     saveStack(pileSimulation, file, nombreIteration);
@@ -223,7 +223,7 @@ void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIterat
     while(i<nombreIteration){
         
         printf("\n ------%d\n",i);
-        if (i>0){
+        if (i>1){
             printf("\n 1 - Revenir en arrière\n");
            
         }
@@ -233,7 +233,7 @@ void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIterat
         CLEAR_STDIN;
         scanf("%c",&choix);
 
-        if(choix == '1' && i>0 ){
+        if(choix == '1' && i>1 ){
             printf("\nVous avez choisi de revenir en arrière\n");
             pop(&pileSimulation);
             affichage_de_la_carte(pileSimulation->adresseCarte);
@@ -265,7 +265,7 @@ void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIterat
             char editType;
             int editDegree;
             int editState;
-            printf("--> Edit this position (%d,%d)\n",editPositionX,editPositionY); 
+            printf("\n\n--> Edit this position (%d,%d)\n",editPositionX,editPositionY); 
             printf("|-- TYPE : ? \n"); 
             CLEAR_STDIN;
             while (1) {
@@ -289,7 +289,7 @@ void manualSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIterat
             printf("|-- ETAT : ? \n");
             CLEAR_STDIN;
             while (1) {
-                if (scanf("%c",&editState) == 1 && editState >= 0 && editState <= 1) {
+                if (scanf("%d",&editState) == 1 && editState == 0 || editState == 1) {
                     break;
                 } else {
                     CLEAR_STDIN;
@@ -324,7 +324,7 @@ void automaticSimulation(pile* pileSimulation, MAP** carteInitial, int nombreIte
     FLAMES* tableauSuivant = NULL;
     cleanStack(&pileSimulation,carteInitial);
     for(int index = 1; index<nombreIteration+1; index++){
-        //sleep(1);
+        sleep(1);
         carteSuivante = create2DTable();
         nextMap(pileSimulation->adresseCarte,carteSuivante);
         tableauSuivant = createFlamesTable();
